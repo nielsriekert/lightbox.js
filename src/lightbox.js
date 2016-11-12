@@ -49,7 +49,7 @@ function LightBox(aElements, options){
 	for(var i=0;i<this.aElements.length;i++){
 		this.aElements[i].addEventListener('click', function(e){ _this.openViewer(e);});
 	}
-};
+}
 
 LightBox.prototype.openViewer = function(e){
 	if(e.target){
@@ -98,7 +98,7 @@ LightBox.prototype.nextItem = function(e){ console.log(e);
 	var index = this.aElements.indexOf(this.currentaElement);
 
 	if(index < this.aElements.length - 1){
-		this.currentaElement = this.aElements[index + 1]
+		this.currentaElement = this.aElements[index + 1];
 	}
 	else if(this.aElements.length == index + 1){
 		this.currentaElement = this.aElements[0];
@@ -117,9 +117,9 @@ LightBox.prototype.previousItem = function(e){
 	console.log(index, this.aElements.length);
 
 	if(index > 0){
-		this.currentaElement = this.aElements[index - 1]
+		this.currentaElement = this.aElements[index - 1];
 	}
-	else if(0 == index){console.log(this.aElements.length - 1);
+	else if(0 === index){console.log(this.aElements.length - 1);
 		this.currentaElement = this.aElements[this.aElements.length - 1];
 	}
 
@@ -152,4 +152,4 @@ LightBox.prototype.setItem = function(e){
 
 	//this.bgElement.classList.add('is-active');
 	this.viewerElement.classList.add('is-active');
-}
+};

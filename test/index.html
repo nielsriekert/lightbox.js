@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<title>lightbox.js test page</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+	<link rel="stylesheet" type="text/css" href="../lightbox.min.css" />
+</head>
+<body>
+<div class="lightbox-gallery">
+ 	<a href="http://nielsriekert.nl/lightbox_001.jpg">Image 01</a>
+ 	<a href="http://nielsriekert.nl/lightbox_002.jpg">Image 01</a>
+ 	<a href="http://nielsriekert.nl/lightbox_003.jpg">Image 01</a>
+ 	<a href="http://nielsriekert.nl/lightbox_004.jpg">Image 01</a>
+ 	<a href="http://nielsriekert.nl/lightbox_005.jpg">Image 01</a>
+</div>
+<script type="text/javascript">
+window.addEventListener('load', function(){
+	var lightBox = new LightBox(document.querySelectorAll('.lightbox-gallery a'));
+});
+</script>
+<script type="text/javascript" src="../lightbox.min.js"></script>
+</body>
+</html>
