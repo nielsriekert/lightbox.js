@@ -59,8 +59,7 @@ LightBox.prototype.openViewer = function(e){
 			target = target.parentNode;
 		}
 
-		//wordt niet ondersteund door IE
-		if(this.aElements.find(function(aElement){ return aElement == target;})){
+		if(this.aElements.indexOf(target) >= 0){
 			this.currentaElement = target;
 		}
 	}
@@ -89,7 +88,7 @@ LightBox.prototype.deactivateViewer = function(e){
 	this.viewerElement.classList.remove('is-active');
 };
 
-LightBox.prototype.nextItem = function(e){ console.log(e);
+LightBox.prototype.nextItem = function(e){
 	if(e.type == 'keydown' && e.keyCode != 39){return;}
 	if(this.lightBoxStatus == 'unloaded'){
 		return;
@@ -103,7 +102,6 @@ LightBox.prototype.nextItem = function(e){ console.log(e);
 	else if(this.aElements.length == index + 1){
 		this.currentaElement = this.aElements[0];
 	}
-	console.log(this.currentaElement);
 	this.setItem();
 };
 
@@ -114,12 +112,11 @@ LightBox.prototype.previousItem = function(e){
 	}
 
 	var index = this.aElements.indexOf(this.currentaElement);
-	console.log(index, this.aElements.length);
 
 	if(index > 0){
 		this.currentaElement = this.aElements[index - 1];
 	}
-	else if(0 === index){console.log(this.aElements.length - 1);
+	else if(0 === index){
 		this.currentaElement = this.aElements[this.aElements.length - 1];
 	}
 
@@ -136,7 +133,8 @@ LightBox.prototype.setItem = function(e){
 	}
 
 	this.currentImgElement = document.createElement('img');
-	this.currentImgElement.classList.add('is-unloaded', 'lightbox-image-current');
+	this.currentImgElement.classList.add('is-unloaded');
+	this.currentImgElement.classList.add('lightbox-image-current');
 	var _this = this;
 	this.currentImgElement.addEventListener('load', function(e){
 		_this.viewerElement.classList.remove('is-loading');

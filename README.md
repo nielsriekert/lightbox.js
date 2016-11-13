@@ -7,8 +7,8 @@ Getting started
 ---
 
 ### Step 1: Download
-[Download lightbox.min.js][download-js].
-[Download lightbox.min.css][download-css].
+- [Download lightbox.min.js][download-js].
+- [Download lightbox.min.css][download-css].
 
 ### Step 2: Include files
 
