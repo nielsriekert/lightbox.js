@@ -7,17 +7,20 @@ Getting started
 ---
 
 ### Step 1: Download
-- [Download lightbox.min.js][download-js].
-- [Download lightbox.min.css][download-css].
+- [Download lightbox.js][download-js].
+- [Download lightbox.css][download-css].
 
-### Step 2: Include files
+### Step 2: Process files
+Rename lightbox.scss -> lightbox.css (current file doesn't contain sass logic)
+
+### Step 3: Include files
 
 ```html
 <!-- Include lightbox.js -->
-<script src="/path/to/lightbox.min.js"></script>
+<script src="/path/to/lightbox.js"></script>
 
 <!-- Include the styles -->
-<script src="/path/to/lightbox.min.css"></script>
+<script src="/path/to/lightbox.css"></script>
 
 <!-- Create a container (optional) element and anchor elements as sources. -->
 <div id="gallery">
@@ -27,7 +30,7 @@ Getting started
 </div>
 ```
 
-### Step 3: Create a new `LightBox` object, passing anchor elements
+### Step 4: Create a new `LightBox` object, passing anchor elements
 
 ```javascript
 window.addEventListener('load', function(){
@@ -35,6 +38,6 @@ window.addEventListener('load', function(){
 });
 ```
 
-[download-js]: https://github.com/nielsriekert/lightbox.js/tree/master/lightbox.min.js
-[download-css]: https://github.com/nielsriekert/lightbox.js/tree/master/lightbox.min.css
-[example]: http://dev.judolosser.nl/fotoalbum/avondvierdaagse/
+[download-js]: https://github.com/nielsriekert/lightbox.js/tree/master/src/lightbox.js
+[download-css]: https://github.com/nielsriekert/lightbox.js/tree/master/src/lightbox.scss
+[example]: http://judolosser.nl/fotoalbum/avondvierdaagse/
