@@ -20,7 +20,7 @@ Rename lightbox.scss -> lightbox.css (current file doesn't contain sass logic)
 <script src="/path/to/lightbox.js"></script>
 
 <!-- Include the styles -->
-<script src="/path/to/lightbox.css"></script>
+<link rel="stylesheet" href="/path/to/lightbox.css" />
 
 <!-- Create a container (optional) element and anchor elements as sources. -->
 <div id="gallery">
