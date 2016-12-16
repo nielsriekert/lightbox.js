@@ -38,6 +38,20 @@ window.addEventListener('load', function(){
 });
 ```
 
+Methods
+---
+
+### openViewer() ###
+Opens the lightbox viewer starting with the first element.
+
+```javascript
+window.addEventListener('load', function(){
+  var lightBox = new LightBox(document.querySelectorAll('#gallery a'));
+
+  lightbox.openViewer();
+});
+```
+
 [download-js]: https://github.com/nielsriekert/lightbox.js/tree/master/src/lightbox.js
 [download-css]: https://github.com/nielsriekert/lightbox.js/tree/master/src/lightbox.scss
 [example]: http://judolosser.nl/fotoalbum/avondvierdaagse/

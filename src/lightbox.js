@@ -9,66 +9,76 @@ function LightBox(aElements, options){
 	//voeg input opties samen met default opties
 	for(var attrname in options){ this.options[attrname] = options[attrname];}
 
-	this.currentaElement = false;
-	this.currentImgElement = false;
+	this.currentaElement = false;//reference to the current link element
+	this.currentImgElement = false;//reference to the current lightbox element (for nog an img)
 	this.lightBoxStatus = 'unloaded';
-	var _this = this;
 
-	//setup viewer
-	//this.bgElement = document.createElement('div');
-	//this.bgElement.setAttribute('class', 'lightbox-background');
+	//bind
+	this.openViewer = this.openViewer.bind(this);
+	this.nextItem = this.nextItem.bind(this);
+	this.previousItem = this.previousItem.bind(this);
+	this.deactivateViewer = this.deactivateViewer.bind(this);
 
+	//create lightbox containerelement
 	this.viewerElement = document.createElement('div');
 	this.viewerElement.setAttribute('class', 'lightbox-viewer');
-	this.viewerElement.addEventListener('click', function(e){ _this.deactivateViewer(e);}, true);
+	this.viewerElement.addEventListener('click', this.deactivateViewer, true);
 
 	if(this.aElements.length > 1){
 		var nextElement = document.createElement('button');
 		nextElement.setAttribute('type', 'button');
 		nextElement.setAttribute('class', 'lightbox-viewer-button-next');
-		nextElement.addEventListener('click', function(e){ _this.nextItem(e);});
+		nextElement.addEventListener('click', this.nextItem);
 
 
 		var prevElement = document.createElement('button');
 		prevElement.setAttribute('type', 'button');
 		prevElement.setAttribute('class', 'lightbox-viewer-button-previous');
-		prevElement.addEventListener('click', function(e){ _this.previousItem(e);});
+		prevElement.addEventListener('click', this.previousItem);
 
 		this.viewerElement.appendChild(nextElement);
 		this.viewerElement.appendChild(prevElement);
 
-		document.addEventListener('keydown', function(e){_this.nextItem(e);} );
-		document.addEventListener('keydown', function(e){_this.previousItem(e);} );
+		document.addEventListener('keydown', this.nextItem);
+		document.addEventListener('keydown', this.previousItem);
 	}
 
-	document.addEventListener('keydown', function(e){_this.deactivateViewer(e);} );
+	document.addEventListener('keydown', this.deactivateViewer);
 
-	//document.body.appendChild(this.bgElement);
 	document.body.appendChild(this.viewerElement);
 
 	for(var i=0;i<this.aElements.length;i++){
-		this.aElements[i].addEventListener('click', function(e){ _this.openViewer(e);});
+		this.aElements[i].addEventListener('click', this.openViewer);
 	}
 }
 
 LightBox.prototype.openViewer = function(e){
-	if(e.target){
-		e.preventDefault();
-		var target = e.target;
-		while(target.nodeName != 'A' && target){
-			target = target.parentNode;
-		}
+	try {//try if the event target is from one of the aElements
+		if(e && e.target){
+			e.preventDefault();
+			var target = e.target;
+			while(target.nodeName != 'A' && target){
+				target = target.parentNode;
+			}
 
-		if(this.aElements.indexOf(target) >= 0){
-			this.currentaElement = target;
+			if(this.aElements.indexOf(target) >= 0){
+				this.currentaElement = target;
+			}
+			else {
+				throw "not found";
+			}
+		}
+		else {
+			throw "no target";
 		}
 	}
-	else {
+	catch(e){
 		this.currentaElement = this.aElements[0];
 	}
+
 	if(this.currentaElement){
 		this.lightBoxStatus = 'loaded';
-		this.setItem();
+		this.updateStatus();
 	}
 };
 
@@ -102,7 +112,7 @@ LightBox.prototype.nextItem = function(e){
 	else if(this.aElements.length == index + 1){
 		this.currentaElement = this.aElements[0];
 	}
-	this.setItem();
+	this.updateStatus();
 };
 
 LightBox.prototype.previousItem = function(e){
@@ -120,10 +130,10 @@ LightBox.prototype.previousItem = function(e){
 		this.currentaElement = this.aElements[this.aElements.length - 1];
 	}
 
-	this.setItem();
+	this.updateStatus();
 };
 
-LightBox.prototype.setItem = function(e){
+LightBox.prototype.updateStatus = function(e){
 	if(!this.currentaElement || !this.currentaElement.getAttribute('href')){
 		return;
 	}
@@ -138,16 +148,11 @@ LightBox.prototype.setItem = function(e){
 	var _this = this;
 	this.currentImgElement.addEventListener('load', function(e){
 		_this.viewerElement.classList.remove('is-loading');
-		var scaleFactorHeight = window.innerHeight / this.offsetHeight * 0.9;
-		var scaleFactorWidth = window.innerWidth / this.offsetWidth * 0.9;
-		var scaleFactor = (scaleFactorHeight > scaleFactorWidth)? scaleFactorWidth : scaleFactorHeight; 
-		this.setAttribute('style', 'transform: scale(' + scaleFactor + ');');
 		this.classList.remove('is-unloaded');
 	});
 	this.currentImgElement.setAttribute('src', this.currentaElement.getAttribute('href'));
 	_this.viewerElement.classList.add('is-loading');
 	this.viewerElement.appendChild(this.currentImgElement);
 
-	//this.bgElement.classList.add('is-active');
 	this.viewerElement.classList.add('is-active');
 };
