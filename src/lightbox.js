@@ -100,7 +100,7 @@ LightBox.prototype.deactivateViewer = function(e){
 
 LightBox.prototype.nextItem = function(e){
 	if(e.type == 'keydown' && e.keyCode != 39){return;}
-	if(this.lightBoxStatus == 'unloaded'){
+	if(this.lightBoxStatus === 'unloaded'){
 		return;
 	}
 
@@ -117,7 +117,7 @@ LightBox.prototype.nextItem = function(e){
 
 LightBox.prototype.previousItem = function(e){
 	if(e.type == 'keydown' && e.keyCode != 37){return;}
-	if(this.lightBoxStatus == 'unloaded'){
+	if(this.lightBoxStatus === 'unloaded'){
 		return;
 	}
 
