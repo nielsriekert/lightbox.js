@@ -1,7 +1,7 @@
 //plugins
 var gulp = require('gulp'),
-	sass = require('gulp-sass')
-	autoprefixer = require('gulp-autoprefixer')
+	sass = require('gulp-sass'),
+	autoprefixer = require('gulp-autoprefixer'),
 	uglify = require('gulp-uglify'),
 	concat = require('gulp-concat'),
 	jshint = require('gulp-jshint');
