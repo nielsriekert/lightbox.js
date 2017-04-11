@@ -22,7 +22,11 @@ function LightBox(aElements, options){
 	//create lightbox containerelement
 	this.viewerElement = document.createElement('div');
 	this.viewerElement.setAttribute('class', 'lightbox-viewer');
-	this.viewerElement.addEventListener('click', this.deactivateViewer, true);
+	this.viewerElement.addEventListener('click', function(e){
+		if(e.target == this.viewerElement){
+			this.deactivateViewer();
+		}
+	}.bind(this), true);
 
 	if(this.aElements.length > 1){
 		var nextElement = document.createElement('button');
@@ -43,7 +47,18 @@ function LightBox(aElements, options){
 		document.addEventListener('keydown', this.previousItem);
 	}
 
-	document.addEventListener('keydown', this.deactivateViewer);
+	var closeElement = document.createElement('button');
+	closeElement.setAttribute('type', 'button');
+	closeElement.setAttribute('class', 'lightbox-viewer-button-close');
+	closeElement.addEventListener('click', this.deactivateViewer);
+
+	this.viewerElement.appendChild(closeElement);
+
+	document.addEventListener('keydown', function(e){
+		if(e.keyCode == 27){
+			this.deactivateViewer();
+		}
+	}.bind(this));
 
 	document.body.appendChild(this.viewerElement);
 
@@ -89,9 +104,9 @@ LightBox.prototype.activateViewer = function(){
 };
 
 LightBox.prototype.deactivateViewer = function(e){
-	if(e.target != this.viewerElement && e.keyCode != 27){
+	/*if(e.target != this.viewerElement && e.keyCode != 27){
 		return false;
-	}
+	}*/
 
 	this.lightBoxStatus = 'unloaded';
 	delete this.currentaElement;
