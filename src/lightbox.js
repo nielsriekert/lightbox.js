@@ -7,7 +7,7 @@ function LightBox(aElements, options){
 	};
 
 	//voeg input opties samen met default opties
-	for(let attrname in options){ this.options[attrname] = options[attrname];}
+	for(var attrname in options){ this.options[attrname] = options[attrname];}
 
 	this.currentaElement = false;//reference to the current link element
 	this.currentImgElement = false;//reference to the current lightbox element (for nog an img)
