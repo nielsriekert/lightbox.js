@@ -45,7 +45,7 @@ Methods
 Opens the lightbox viewer starting with the first element.
 
 ```javascript
-window.addEventListener('load', function(){
+window.addEventListener('DOMContentLoaded', function(){
   var lightBox = new LightBox(document.querySelectorAll('#gallery a'));
 
   lightbox.openViewer();

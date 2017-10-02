@@ -4,7 +4,8 @@ var gulp = require('gulp'),
 	autoprefixer = require('gulp-autoprefixer'),
 	uglify = require('gulp-uglify'),
 	concat = require('gulp-concat'),
-	jshint = require('gulp-jshint');
+	jshint = require('gulp-jshint'),
+	babel = require('gulp-babel');
 
 //tasks
 gulp.task('styles', function() {
@@ -17,6 +18,9 @@ gulp.task('styles', function() {
 
 gulp.task('scripts', function() {
 	return gulp.src(['src/lightbox.js'])
+		.pipe(babel({
+			presets: ['env'],
+		}))
 		.pipe(uglify())
 		.pipe(concat('lightbox.min.js'))
 		.pipe(gulp.dest('.'));
