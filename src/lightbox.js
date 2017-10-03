@@ -1,4 +1,4 @@
-function LightBox(aElements, options){
+function LightBox(aElements){
 	if(aElements.nodeName === 'A') {
 		this.aElements = [aElements];
 	}
@@ -9,13 +9,34 @@ function LightBox(aElements, options){
 		return;
 	}
 
-	//default options
-	this.options = {
-		'temp' : ''
-	};
+	this.srcRegExp = [
+		/\.png$/i,
+		/\.apng$/i,
+		/\.jpg$/i,
+		/\.gif$/i,
+		/\.webp$/i,
+		/\.svg$/i
+	];
 
-	//voeg input opties samen met default opties
-	for(var attrname in options){ this.options[attrname] = options[attrname];}
+	var match = false;
+	for(var i=this.aElements.length-1;i>=0;i--){
+		match = false;
+		for(var j=0;j<this.srcRegExp.length;j++){
+			if(this.aElements[i].getAttribute('href').match(this.srcRegExp[j])){
+				match = true;
+				continue;
+			}
+		}
+
+		if(!match){
+			console.warn('Source not supported: ' + this.aElements[i].getAttribute('href'));
+			this.aElements.splice(i, 1);
+		}
+	}
+
+	if(this.aElements.length === 0){
+		return;
+	}
 
 	this.currentaElement = false;//reference to the current link element
 	this.currentImgElement = false;//reference to the current lightbox element (for nog an img)
@@ -41,7 +62,6 @@ function LightBox(aElements, options){
 		nextElement.setAttribute('type', 'button');
 		nextElement.setAttribute('class', 'lightbox-viewer-button-next');
 		nextElement.addEventListener('click', this.nextItem);
-
 
 		var prevElement = document.createElement('button');
 		prevElement.setAttribute('type', 'button');
@@ -168,7 +188,7 @@ LightBox.prototype.updateStatus = function(){
 	this.currentImgElement = document.createElement('img');
 	this.currentImgElement.classList.add('is-unloaded');
 	this.currentImgElement.classList.add('lightbox-image-current');
-	
+
 	this.currentImgElement.addEventListener('load', function(event){
 		this.viewerElement.classList.remove('is-loading');
 		event.target.classList.remove('is-unloaded');
