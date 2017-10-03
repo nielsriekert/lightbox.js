@@ -1,5 +1,13 @@
 function LightBox(aElements, options){
-	this.aElements = [].slice.call(aElements);
+	if(aElements.nodeName === 'A') {
+		this.aElements = [aElements];
+	}
+	else if(aElements.length) {
+		this.aElements = [].slice.call(aElements);
+	}
+	else {
+		return;
+	}
 
 	//default options
 	this.options = {
@@ -67,11 +75,11 @@ function LightBox(aElements, options){
 	}
 }
 
-LightBox.prototype.openViewer = function(e){
+LightBox.prototype.openViewer = function(event){
 	try {//try if the event target is from one of the aElements
-		if(e && e.target){
-			e.preventDefault();
-			var target = e.target;
+		if(event && event.target){
+			event.preventDefault();
+			var target = event.target;
 			while(target.nodeName != 'A' && target){
 				target = target.parentNode;
 			}
@@ -87,7 +95,7 @@ LightBox.prototype.openViewer = function(e){
 			throw "no target";
 		}
 	}
-	catch(e){
+	catch(event){
 		this.currentaElement = this.aElements[0];
 	}
 
@@ -103,7 +111,7 @@ LightBox.prototype.activateViewer = function(){
 	}
 };
 
-LightBox.prototype.deactivateViewer = function(e){
+LightBox.prototype.deactivateViewer = function(){
 	/*if(e.target != this.viewerElement && e.keyCode != 27){
 		return false;
 	}*/
@@ -148,7 +156,7 @@ LightBox.prototype.previousItem = function(e){
 	this.updateStatus();
 };
 
-LightBox.prototype.updateStatus = function(e){
+LightBox.prototype.updateStatus = function(){
 	if(!this.currentaElement || !this.currentaElement.getAttribute('href')){
 		return;
 	}
@@ -160,13 +168,14 @@ LightBox.prototype.updateStatus = function(e){
 	this.currentImgElement = document.createElement('img');
 	this.currentImgElement.classList.add('is-unloaded');
 	this.currentImgElement.classList.add('lightbox-image-current');
-	var _this = this;
-	this.currentImgElement.addEventListener('load', function(e){
-		_this.viewerElement.classList.remove('is-loading');
-		this.classList.remove('is-unloaded');
-	});
+	
+	this.currentImgElement.addEventListener('load', function(event){
+		this.viewerElement.classList.remove('is-loading');
+		event.target.classList.remove('is-unloaded');
+	}.bind(this));
+
 	this.currentImgElement.setAttribute('src', this.currentaElement.getAttribute('href'));
-	_this.viewerElement.classList.add('is-loading');
+	this.viewerElement.classList.add('is-loading');
 	this.viewerElement.appendChild(this.currentImgElement);
 
 	this.viewerElement.classList.add('is-active');
