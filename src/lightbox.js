@@ -1,3 +1,7 @@
+/*!
+ * LightBox.js v1.0
+ * (c) 2016-2017 Niels Riekert
+ */
 function LightBox(aElements){
 	if(aElements.nodeName === 'A') {
 		this.aElements = [aElements];
@@ -9,37 +13,60 @@ function LightBox(aElements){
 		return;
 	}
 
-	this.srcRegExp = [
-		/\.png$/i,
-		/\.apng$/i,
-		/\.jpg$/i,
-		/\.gif$/i,
-		/\.webp$/i,
-		/\.svg$/i
+	this.srcTypes = [
+		{
+			'regExp' : /\.png$/i,
+			'type' : 'image'
+		},
+		{
+			'regExp' : /\.apng$/i,
+			'type' : 'image'
+		},
+		{
+			'regExp' : /\.jpg$/i,
+			'type' : 'image'
+		},
+		{
+			'regExp' : /\.gif$/i,
+			'type' : 'image'
+		},
+		{
+			'regExp' : /\.webp$/i,
+			'type' : 'image'
+		},
+		{
+			'regExp' : /\.svg$/i,
+			'type' : 'image'
+		},
+		{
+			'regExp' : /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i,
+			'type' : 'youtube'
+		},
 	];
 
-	var match = false;
-	for(var i=this.aElements.length-1;i>=0;i--){
-		match = false;
-		for(var j=0;j<this.srcRegExp.length;j++){
-			if(this.aElements[i].getAttribute('href').match(this.srcRegExp[j])){
-				match = true;
-				continue;
-			}
-		}
+	this.srcElements = [];
 
-		if(!match){
-			console.warn('Source not supported: ' + this.aElements[i].getAttribute('href'));
-			this.aElements.splice(i, 1);
+	for(var i=0;i<this.aElements.length;i++){
+		for(var j=0;j<this.srcTypes.length;j++){
+			if(this.aElements[i].getAttribute('href').match(this.srcTypes[j].regExp)){
+				this.srcElements.push(
+					{
+						'element' : this.aElements[i],
+						'type' : this.srcTypes[j].type,
+						'regExp' : this.srcTypes[j].regExp
+					}
+				);
+				break;
+			}
 		}
 	}
 
-	if(this.aElements.length === 0){
+	if(this.srcElements.length === 0){
 		return;
 	}
 
-	this.currentaElement = false;//reference to the current link element
-	this.currentImgElement = false;//reference to the current lightbox element (for nog an img)
+	this.currentSource = false;//reference to the current link element
+	this.currentSourceElement = false;//reference to the current lightbox element (for nog an img)
 	this.lightBoxStatus = 'unloaded';
 
 	//bind
@@ -57,7 +84,7 @@ function LightBox(aElements){
 		}
 	}.bind(this), true);
 
-	if(this.aElements.length > 1){
+	if(this.srcElements.length > 1){
 		var nextElement = document.createElement('button');
 		nextElement.setAttribute('type', 'button');
 		nextElement.setAttribute('class', 'lightbox-viewer-button-next');
@@ -90,13 +117,13 @@ function LightBox(aElements){
 
 	document.body.appendChild(this.viewerElement);
 
-	for(var i=0;i<this.aElements.length;i++){
-		this.aElements[i].addEventListener('click', this.openViewer);
+	for(var i=0;i<this.srcElements.length;i++){
+		this.srcElements[i].element.addEventListener('click', this.openViewer);
 	}
 }
 
 LightBox.prototype.openViewer = function(event){
-	try {//try if the event target is from one of the aElements
+	try {//try if the event target is from one of the srcElements
 		if(event && event.target){
 			event.preventDefault();
 			var target = event.target;
@@ -104,10 +131,15 @@ LightBox.prototype.openViewer = function(event){
 				target = target.parentNode;
 			}
 
-			if(this.aElements.indexOf(target) >= 0){
-				this.currentaElement = target;
+			var found = false;
+			for(var i=0;i<this.srcElements.length;i++){
+				if(this.srcElements[i].element == target){
+					this.currentSource = this.srcElements[i];
+					found = true;
+					break;
+				}
 			}
-			else {
+			if(!found){
 				throw "not found";
 			}
 		}
@@ -116,44 +148,37 @@ LightBox.prototype.openViewer = function(event){
 		}
 	}
 	catch(event){
-		this.currentaElement = this.aElements[0];
+		this.currentSource = this.srcElements[0];
 	}
 
-	if(this.currentaElement){
+	if(this.currentSource){
 		this.lightBoxStatus = 'loaded';
 		this.updateStatus();
 	}
 };
 
-LightBox.prototype.activateViewer = function(){
-	if(!this.currentaElement || !this.currentaElement.getAttribute('href')){
-		return;
-	}
-};
-
 LightBox.prototype.deactivateViewer = function(){
-	/*if(e.target != this.viewerElement && e.keyCode != 27){
-		return false;
-	}*/
-
 	this.lightBoxStatus = 'unloaded';
-	delete this.currentaElement;
+	delete this.currentSource;
+	if(this.currentSourceElement.getAttribute('data-source-type') == 'youtube'){
+		this.currentSourceElement.parentNode.removeChild(this.currentSourceElement);
+	}
 	this.viewerElement.classList.remove('is-active');
 };
 
-LightBox.prototype.nextItem = function(e){
+LightBox.prototype.nextItem = function(e){console.log(e);
 	if(e.type == 'keydown' && e.keyCode != 39){return;}
 	if(this.lightBoxStatus === 'unloaded'){
 		return;
 	}
 
-	var index = this.aElements.indexOf(this.currentaElement);
+	var index = this.srcElements.indexOf(this.currentSource);
 
-	if(index < this.aElements.length - 1){
-		this.currentaElement = this.aElements[index + 1];
+	if(index < this.srcElements.length - 1){
+		this.currentSource = this.srcElements[index + 1];
 	}
-	else if(this.aElements.length == index + 1){
-		this.currentaElement = this.aElements[0];
+	else if(this.srcElements.length == index + 1){
+		this.currentSource = this.srcElements[0];
 	}
 	this.updateStatus();
 };
@@ -164,39 +189,55 @@ LightBox.prototype.previousItem = function(e){
 		return;
 	}
 
-	var index = this.aElements.indexOf(this.currentaElement);
+	var index = this.srcElements.indexOf(this.currentSource);
 
 	if(index > 0){
-		this.currentaElement = this.aElements[index - 1];
+		this.currentSource = this.srcElements[index - 1];
 	}
 	else if(0 === index){
-		this.currentaElement = this.aElements[this.aElements.length - 1];
+		this.currentSource = this.srcElements[this.srcElements.length - 1];
 	}
 
 	this.updateStatus();
 };
 
 LightBox.prototype.updateStatus = function(){
-	if(!this.currentaElement || !this.currentaElement.getAttribute('href')){
+	if(!this.currentSource || !this.currentSource.element.getAttribute('href')){
 		return;
 	}
 
-	if(this.currentImgElement){
-		this.currentImgElement.parentNode.removeChild(this.currentImgElement);
+	if(this.currentSourceElement && this.currentSourceElement.parentNode){
+		this.currentSourceElement.parentNode.removeChild(this.currentSourceElement);
+	}
+	
+	var src = '';
+	switch(this.currentSource.type){
+		case 'image':
+			this.currentSourceElement = document.createElement('img');
+			this.currentSourceElement.classList.add('lightbox-source-image');
+			src = this.currentSource.element.getAttribute('href');
+			break;
+		case 'youtube':
+			this.currentSourceElement = document.createElement('iframe');
+			this.currentSourceElement.classList.add('lightbox-source-youtube');
+			this.currentSourceElement.setAttribute('frameborder', 0);
+			this.currentSourceElement.setAttribute('allowfullscreen', 'allowfullscreen');
+			src = 'https://www.youtube.com/embed/' + this.currentSource.element.getAttribute('href').match(this.currentSource.regExp)[1];
+			break;
 	}
 
-	this.currentImgElement = document.createElement('img');
-	this.currentImgElement.classList.add('is-unloaded');
-	this.currentImgElement.classList.add('lightbox-image-current');
+	this.currentSourceElement.setAttribute('data-source-type', this.currentSource.type);
+	this.currentSourceElement.classList.add('is-unloaded');
+	this.currentSourceElement.classList.add('lightbox-source-current');
 
-	this.currentImgElement.addEventListener('load', function(event){
+	this.currentSourceElement.addEventListener('load', function(event){
 		this.viewerElement.classList.remove('is-loading');
 		event.target.classList.remove('is-unloaded');
 	}.bind(this));
 
-	this.currentImgElement.setAttribute('src', this.currentaElement.getAttribute('href'));
+	this.currentSourceElement.setAttribute('src', src);
 	this.viewerElement.classList.add('is-loading');
-	this.viewerElement.appendChild(this.currentImgElement);
+	this.viewerElement.appendChild(this.currentSourceElement);
 
 	this.viewerElement.classList.add('is-active');
 };

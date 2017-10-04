@@ -124,7 +124,7 @@
 	content: "✖";
 }
 
-.lightbox-image-current {
+.lightbox-source-current {
 	display: block;
 	position: absolute;
 	left: 0;
@@ -140,12 +140,18 @@
 }
 
 @media (min-width: 500px ) {
-	.lightbox-image-current {
+	.lightbox-source-current {
 		max-width: 90%;
 		max-height: 90%;
 	}
 }
 
-.lightbox-image-current.is-unloaded {
+.lightbox-source-current.is-unloaded {
 	opacity: 0;
+}
+
+.lightbox-source-youtube {
+	display: block;
+	width: 70vw;
+	height: 39.375vw;
 }
