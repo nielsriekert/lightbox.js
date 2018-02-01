@@ -1,5 +1,5 @@
 /*!
- * LightBox.js v1.0
+ * LightBox.js v1.0.1
  * (c) 2016-2017 Niels Riekert
  */
 function LightBox(aElements){
@@ -67,7 +67,7 @@ function LightBox(aElements){
 
 	this.currentSource = false;//reference to the current link element
 	this.currentSourceElement = false;//reference to the current lightbox element (for nog an img)
-	this.lightBoxStatus = 'unloaded';
+	this.lightBoxLoaded = false;
 
 	//bind
 	this.openViewer = this.openViewer.bind(this);
@@ -98,8 +98,17 @@ function LightBox(aElements){
 		this.viewerElement.appendChild(nextElement);
 		this.viewerElement.appendChild(prevElement);
 
-		document.addEventListener('keydown', this.nextItem);
-		document.addEventListener('keydown', this.previousItem);
+		document.addEventListener('keydown', function(e){
+			switch(e.keyCode){
+				case 37:
+					this.previousItem();
+					break;
+				case 39:
+					this.nextItem();
+					break;
+			}
+			
+		}.bind(this));
 	}
 
 	var closeElement = document.createElement('button');
@@ -152,13 +161,13 @@ LightBox.prototype.openViewer = function(event){
 	}
 
 	if(this.currentSource){
-		this.lightBoxStatus = 'loaded';
+		this.lightBoxLoaded = true;
 		this.updateStatus();
 	}
 };
 
 LightBox.prototype.deactivateViewer = function(){
-	this.lightBoxStatus = 'unloaded';
+	this.lightBoxLoaded = false;
 	delete this.currentSource;
 	if(this.currentSourceElement.getAttribute('data-source-type') == 'youtube'){
 		this.currentSourceElement.parentNode.removeChild(this.currentSourceElement);
@@ -166,9 +175,8 @@ LightBox.prototype.deactivateViewer = function(){
 	this.viewerElement.classList.remove('is-active');
 };
 
-LightBox.prototype.nextItem = function(e){console.log(e);
-	if(e.type == 'keydown' && e.keyCode != 39){return;}
-	if(this.lightBoxStatus === 'unloaded'){
+LightBox.prototype.nextItem = function(){
+	if(this.lightBoxLoaded === false){
 		return;
 	}
 
@@ -183,9 +191,8 @@ LightBox.prototype.nextItem = function(e){console.log(e);
 	this.updateStatus();
 };
 
-LightBox.prototype.previousItem = function(e){
-	if(e.type == 'keydown' && e.keyCode != 37){return;}
-	if(this.lightBoxStatus === 'unloaded'){
+LightBox.prototype.previousItem = function(){
+	if(this.lightBoxLoaded === false){
 		return;
 	}
 

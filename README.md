@@ -33,7 +33,7 @@ Rename lightbox.scss -> lightbox.css (current file doesn't contain sass logic)
 ### Step 4: Create a new `LightBox` object, passing anchor elements
 
 ```javascript
-window.addEventListener('load', function(){
+window.addEventListener('DOMContentLoaded', function(){
   var lightBox = new LightBox(document.querySelectorAll('#gallery a'));
 });
 ```

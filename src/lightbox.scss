@@ -139,7 +139,7 @@
 	transition: opacity .3s;
 }
 
-@media (min-width: 500px ) {
+@media (min-width: 600px ) {
 	.lightbox-source-current {
 		max-width: 90%;
 		max-height: 90%;
@@ -152,6 +152,13 @@
 
 .lightbox-source-youtube {
 	display: block;
-	width: 70vw;
-	height: 39.375vw;
+	width: 100vw;
+	height: 56.25vw;
+}
+
+@media (min-width: 600px ) {
+	.lightbox-source-youtube {
+		width: 70vw;
+		height: 39.375vw;
+	}
 }
