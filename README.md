@@ -1,4 +1,4 @@
-Another LightBox
+VanilleLightbox
 ===
 
 [An example][example]
@@ -7,8 +7,8 @@ Getting started
 ---
 
 ### Step 1: Download
-- [Download lightbox.js][download-js].
-- [Download lightbox.css][download-css].
+- [Download vanillelightbox.js][download-js].
+- [Download vanillelightbox.css][download-css].
 
 ### Step 2: Process files
 Rename lightbox.scss -> lightbox.css (current file doesn't contain sass logic)
@@ -16,11 +16,11 @@ Rename lightbox.scss -> lightbox.css (current file doesn't contain sass logic)
 ### Step 3: Include files
 
 ```html
-<!-- Include lightbox.js -->
-<script src="/path/to/lightbox.js"></script>
+<!-- Include vanillelightbox.js -->
+<script src="/path/to/vanillelightbox.js"></script>
 
 <!-- Include the styles -->
-<link rel="stylesheet" href="/path/to/lightbox.css" />
+<link rel="stylesheet" href="/path/to/vanillelightbox.css" />
 
 <!-- Create a container (optional) element and anchor elements as sources. -->
 <div id="gallery">
@@ -30,11 +30,11 @@ Rename lightbox.scss -> lightbox.css (current file doesn't contain sass logic)
 </div>
 ```
 
-### Step 4: Create a new `LightBox` object, passing anchor elements
+### Step 4: Create a new `VanilleLightbox` object, passing anchor elements
 
 ```javascript
 window.addEventListener('DOMContentLoaded', function(){
-  var lightBox = new LightBox(document.querySelectorAll('#gallery a'));
+  var vanilleLightbox = new VanilleLightbox(document.querySelectorAll('#gallery a'));
 });
 ```
 
@@ -46,12 +46,12 @@ Opens the lightbox viewer starting with the first element.
 
 ```javascript
 window.addEventListener('DOMContentLoaded', function(){
-  var lightBox = new LightBox(document.querySelectorAll('#gallery a'));
+  var vanilleLightbox = new VanilleLightbox(document.querySelectorAll('#gallery a'));
 
-  lightbox.openViewer();
+  vanilleLightbox.openViewer();
 });
 ```
 
-[download-js]: https://github.com/nielsriekert/lightbox.js/tree/master/src/lightbox.js
-[download-css]: https://github.com/nielsriekert/lightbox.js/tree/master/src/lightbox.scss
+[download-js]: https://github.com/nielsriekert/vanillelightbox/tree/master/src/vanillelightbox.js
+[download-css]: https://github.com/nielsriekert/vanillelightbox/tree/master/src/vanillelightbox.scss
 [example]: http://judolosser.nl/fotoalbum/avondvierdaagse/

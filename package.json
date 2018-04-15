@@ -1,21 +1,29 @@
 {
-  "name": "lightbox",
-  "version": "1.0.1",
-  "description": "Another LightBox",
-  "main": "gulpfile.js",
-  "author": "",
+  "name": "vanillelightbox",
+  "version": "1.0.4",
+  "description": "Another LightBox, simple, without dependencies",
+  "main": "dist/vanillelightbox.js",
+  "style": "dist/vanillelightbox.css",
+  "author": "Niels Riekert",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielsriekert/vanillelightbox.git"
+  },
+  "scripts": {
+    "build": "gulp"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.1.0",
+    "gulp-autoprefixer": "^5.0.0",
     "gulp-babel": "^7.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-jshint": "^2.1.0",
-    "gulp-sass": "^3.1.0",
+    "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.5"
   },
   "babel": {

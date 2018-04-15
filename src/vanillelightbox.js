@@ -1,8 +1,8 @@
 /*!
- * LightBox.js v1.0.1
- * (c) 2016-2017 Niels Riekert
+ * VanilleLightbox v1.0.4
+ * (c) 2016-2018 Niels Riekert
  */
-function LightBox(aElements){
+function VanilleLightbox(aElements){
 	if(aElements.nodeName === 'A') {
 		this.aElements = [aElements];
 	}
@@ -23,7 +23,7 @@ function LightBox(aElements){
 			'type' : 'image'
 		},
 		{
-			'regExp' : /\.jpg$/i,
+			'regExp' : /\.jpe?g$/i,
 			'type' : 'image'
 		},
 		{
@@ -77,7 +77,7 @@ function LightBox(aElements){
 
 	//create lightbox containerelement
 	this.viewerElement = document.createElement('div');
-	this.viewerElement.setAttribute('class', 'lightbox-viewer');
+	this.viewerElement.setAttribute('class', 'vanillelightbox-viewer');
 	this.viewerElement.addEventListener('click', function(e){
 		if(e.target == this.viewerElement){
 			this.deactivateViewer();
@@ -87,12 +87,12 @@ function LightBox(aElements){
 	if(this.srcElements.length > 1){
 		var nextElement = document.createElement('button');
 		nextElement.setAttribute('type', 'button');
-		nextElement.setAttribute('class', 'lightbox-viewer-button-next');
+		nextElement.setAttribute('class', 'vanillelightbox-viewer-button-next');
 		nextElement.addEventListener('click', this.nextItem);
 
 		var prevElement = document.createElement('button');
 		prevElement.setAttribute('type', 'button');
-		prevElement.setAttribute('class', 'lightbox-viewer-button-previous');
+		prevElement.setAttribute('class', 'vanillelightbox-viewer-button-previous');
 		prevElement.addEventListener('click', this.previousItem);
 
 		this.viewerElement.appendChild(nextElement);
@@ -113,7 +113,7 @@ function LightBox(aElements){
 
 	var closeElement = document.createElement('button');
 	closeElement.setAttribute('type', 'button');
-	closeElement.setAttribute('class', 'lightbox-viewer-button-close');
+	closeElement.setAttribute('class', 'vanillelightbox-viewer-button-close');
 	closeElement.addEventListener('click', this.deactivateViewer);
 
 	this.viewerElement.appendChild(closeElement);
@@ -131,7 +131,7 @@ function LightBox(aElements){
 	}
 }
 
-LightBox.prototype.openViewer = function(event){
+VanilleLightbox.prototype.openViewer = function(event){
 	try {//try if the event target is from one of the srcElements
 		if(event && event.target){
 			event.preventDefault();
@@ -166,7 +166,7 @@ LightBox.prototype.openViewer = function(event){
 	}
 };
 
-LightBox.prototype.deactivateViewer = function(){
+VanilleLightbox.prototype.deactivateViewer = function(){
 	this.lightBoxLoaded = false;
 	delete this.currentSource;
 	if(this.currentSourceElement.getAttribute('data-source-type') == 'youtube'){
@@ -175,7 +175,7 @@ LightBox.prototype.deactivateViewer = function(){
 	this.viewerElement.classList.remove('is-active');
 };
 
-LightBox.prototype.nextItem = function(){
+VanilleLightbox.prototype.nextItem = function(){
 	if(this.lightBoxLoaded === false){
 		return;
 	}
@@ -191,7 +191,7 @@ LightBox.prototype.nextItem = function(){
 	this.updateStatus();
 };
 
-LightBox.prototype.previousItem = function(){
+VanilleLightbox.prototype.previousItem = function(){
 	if(this.lightBoxLoaded === false){
 		return;
 	}
@@ -208,7 +208,7 @@ LightBox.prototype.previousItem = function(){
 	this.updateStatus();
 };
 
-LightBox.prototype.updateStatus = function(){
+VanilleLightbox.prototype.updateStatus = function(){
 	if(!this.currentSource || !this.currentSource.element.getAttribute('href')){
 		return;
 	}
@@ -221,12 +221,12 @@ LightBox.prototype.updateStatus = function(){
 	switch(this.currentSource.type){
 		case 'image':
 			this.currentSourceElement = document.createElement('img');
-			this.currentSourceElement.classList.add('lightbox-source-image');
+			this.currentSourceElement.classList.add('vanillelightbox-source-image');
 			src = this.currentSource.element.getAttribute('href');
 			break;
 		case 'youtube':
 			this.currentSourceElement = document.createElement('iframe');
-			this.currentSourceElement.classList.add('lightbox-source-youtube');
+			this.currentSourceElement.classList.add('vanillelightbox-source-youtube');
 			this.currentSourceElement.setAttribute('frameborder', 0);
 			this.currentSourceElement.setAttribute('allowfullscreen', 'allowfullscreen');
 			src = 'https://www.youtube.com/embed/' + this.currentSource.element.getAttribute('href').match(this.currentSource.regExp)[1];
@@ -235,7 +235,7 @@ LightBox.prototype.updateStatus = function(){
 
 	this.currentSourceElement.setAttribute('data-source-type', this.currentSource.type);
 	this.currentSourceElement.classList.add('is-unloaded');
-	this.currentSourceElement.classList.add('lightbox-source-current');
+	this.currentSourceElement.classList.add('vanillelightbox-source-current');
 
 	this.currentSourceElement.addEventListener('load', function(event){
 		this.viewerElement.classList.remove('is-loading');
@@ -248,3 +248,5 @@ LightBox.prototype.updateStatus = function(){
 
 	this.viewerElement.classList.add('is-active');
 };
+
+export default VanilleLightbox;
