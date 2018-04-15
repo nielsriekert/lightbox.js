@@ -1,5 +1,5 @@
 /*!
- * VanilleLightbox v1.0.2
+ * VanilleLightbox v1.0.3
  * (c) 2016-2018 Niels Riekert
  */
 function VanilleLightbox(aElements){
@@ -248,3 +248,5 @@ VanilleLightbox.prototype.updateStatus = function(){
 
 	this.viewerElement.classList.add('is-active');
 };
+
+export default VanilleLightbox;
