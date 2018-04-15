@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-	<title>lightbox.js test page</title>
+	<title>vanillelightbox test page</title>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-	<link rel="stylesheet" type="text/css" href="../lightbox.min.css" />
+	<link rel="stylesheet" type="text/css" href="../dist/vanillelightbox.css" />
 </head>
 <body>
 	<div class="lightbox-gallery" id="lightbox-gallery-multiple">
@@ -22,13 +22,13 @@
 	</div>
 	<script type="text/javascript">
 	window.addEventListener('DOMContentLoaded', function(){
-		var lightBoxMultipleImages = new LightBox(document.querySelectorAll('#lightbox-gallery-multiple a'));
+		var lightBoxMultipleImages = new VanilleLightbox(document.querySelectorAll('#lightbox-gallery-multiple a'));
 
-		var lightBoxSingleImage = new LightBox(document.getElementById('image'));
+		var lightBoxSingleImage = new VanilleLightbox(document.getElementById('image'));
 
-		var lightBoxMultipleVideo = new LightBox(document.querySelectorAll('.lightbox-gallery-video a'));
+		var lightBoxMultipleVideo = new VanilleLightbox(document.querySelectorAll('.lightbox-gallery-video a'));
 	});
 	</script>
-	<script type="text/javascript" src="../lightbox.min.js"></script>
+	<script type="text/javascript" src="../dist/vanillelightbox.js"></script>
 </body>
 </html>
