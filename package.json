@@ -1,6 +1,6 @@
 {
   "name": "vanillelightbox",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Another LightBox, simple, without dependencies",
   "main": "dist/vanillelightbox.js",
   "style": "dist/vanillelightbox.css",
