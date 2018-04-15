@@ -1,5 +1,5 @@
 /*!
- * VanilleLightbox v1.0.3
+ * VanilleLightbox v1.0.4
  * (c) 2016-2018 Niels Riekert
  */
 function VanilleLightbox(aElements){
